@@ -1,5 +1,6 @@
-import { useForm } from 'react-hook-form';
 import Head from 'next/head';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 interface LoginFormValues {
   phoneNumber: string;
@@ -9,9 +10,14 @@ interface LoginFormValues {
 const LoginForm = () => {
 
   const {register, handleSubmit, reset, formState: { errors }} = useForm<LoginFormValues>();
+  const dispatch = useDispatch();
 
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
+
+    dispatch({type: 'SET_PHONE_NUMBER', payload: data.phoneNumber});
+    dispatch({type: 'SET_PASSWORD', payload: data.password});
+
+    //reset input fields
     reset();
   }
 
