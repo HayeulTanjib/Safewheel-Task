@@ -4,6 +4,9 @@ import { useQuery } from '@apollo/client';
 const Pokemons = () => {
   const { loading, error, data } = useQuery(GET_ALL_POKEMONS);
 
+  console.log(data);
+  
+
   //Loading State
   if (loading) {
     return (
@@ -30,7 +33,7 @@ const Pokemons = () => {
   }
 
   //Error Handling
-  if (error) {
+  if (error || data.pokemons.length < 1 ) {
     return (
       <div
         className='flex justify-center items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50'
@@ -50,7 +53,9 @@ const Pokemons = () => {
           ></path>
         </svg>
         <div>
-          <span className='font-medium'>Error!</span> {error.message}
+          <span className='font-medium'>Error! </span> 
+          {error && error.message}
+          {data.pokemons.length < 1 && "No data found"}
         </div>
       </div>
     );
@@ -62,7 +67,7 @@ const Pokemons = () => {
         {data.pokemons.map((pokemon: any) => (
           <div
             key={pokemon.id}
-            className='w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl'
+            className='w-72 bg-white shadow-md shadow-cyan-500/50 rounded-xl duration-500 hover:scale-105 hover:shadow-xl'
           >
             <img
               src={pokemon.image}
