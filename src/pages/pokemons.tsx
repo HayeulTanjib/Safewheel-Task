@@ -3,9 +3,8 @@ import { useQuery } from '@apollo/client';
 import Link from 'next/link';
 
 const Pokemons = () => {
-  const { loading, error, data } = useQuery(GET_ALL_POKEMONS);
 
-  console.log(data);
+  const { loading, error, data } = useQuery(GET_ALL_POKEMONS);
   
 
   //Loading State
@@ -64,6 +63,9 @@ const Pokemons = () => {
 
   return (
     <main>
+        <Link href={'/'}>
+            <button type="button" className="text-white mx-4 mt-4 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Home</button>
+        </Link>
       <section className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5'>
         {data.pokemons.map((pokemon: any) => (
           <div
