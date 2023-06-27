@@ -1,18 +1,24 @@
-import { GET_ALL_POKEMONS } from '@/gqlOperations/queries';
 import { useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { GET_SINGLE_POKEMON } from '../../gqlOperations/queries';
 
-const Pokemons = () => {
-  const { loading, error, data } = useQuery(GET_ALL_POKEMONS);
+const PokemonDettails = () => {
+  const router = useRouter();
+  const { id } = router.query;
 
-  console.log(data);
-  
+  const { loading, error, data } = useQuery(GET_SINGLE_POKEMON, {
+    variables: {
+      id,
+    },
+  });
+
 
   //Loading State
   if (loading) {
     return (
       <div className='flex justify-center items-center mt-10' role='status'>
-        <h2 className='mx-2 font-semibold'>Pokemons Loading</h2>
+        <h2 className='mx-2 font-semibold'>Pokemon Loading</h2>
         <svg
           aria-hidden='true'
           className='w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600'
@@ -34,7 +40,7 @@ const Pokemons = () => {
   }
 
   //Error Handling
-  if (error || data.pokemons.length < 1 ) {
+  if (error || Object.keys(data.pokemon).length < 1) {
     return (
       <div
         className='flex justify-center items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50'
@@ -54,43 +60,37 @@ const Pokemons = () => {
           ></path>
         </svg>
         <div>
-          <span className='font-medium'>Error! </span> 
+          <span className='font-medium'>Error! </span>
           {error && error.message}
-          {data.pokemons.length < 1 && "No data found"}
+          {Object.keys(data.pokemon).length < 1 && 'No data found'}
         </div>
       </div>
     );
   }
 
+  console.log('Single Pokemon> ', data);
+
+  const { name, number, classification, image } = data?.pokemon;
+
   return (
-    <main>
-      <section className='w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5'>
-        {data.pokemons.map((pokemon: any) => (
-          <div
-            key={pokemon.id}
-            className='w-72 bg-white shadow-md shadow-cyan-500/50 rounded-xl duration-500 hover:scale-105 hover:shadow-xl'
-          >
-            <img
-              src={pokemon.image}
-              alt='Pokemons'
-              className='h-80 w-72 object-cover rounded-t-xl'
-            />
-            <div className='px-4 py-3 w-72'>
-              <span className='text-gray-400 mr-3 uppercase text-xs'>{pokemon.classification}</span>
-              <p className='text-lg font-bold text-black truncate block capitalize'>
-                {pokemon.name}
-              </p>
-              <div className='flex items-center'>
-                <Link href={`pokemon/${pokemon.id}`}>
-                <button type="button" className="text-white my-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">See Details</button>
-                </Link>
-              </div>
-            </div>
+    <main className='flex flex-col justify-center items-center'>
+        <Link href={'/pokemons'}>
+            <button type="button" className="text-white my-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Go back to all Pokemons</button>
+        </Link>
+      <div className='w-96 bg-white shadow-md shadow-cyan-500/50 rounded-xl duration-500 hover:scale-105 hover:shadow-xl'>
+        <div className='flex justify-center items-center py-4'>
+        <img src={image} alt='Pokemons' className='h-80 w-72 object-cover rounded-t-xl' />
+        </div>
+        <div className='px-4 py-3 w-72'>
+          <span className='text-gray-400 mr-3 uppercase text-xs'>{classification}</span>
+          <p className='text-lg font-bold text-black truncate block capitalize'>{name}</p>
+          <div className='flex items-center'>
+            <p className='text-lg font-semibold text-black cursor-auto my-3'>{number}</p>
           </div>
-        ))}
-      </section>
+        </div>
+      </div>
     </main>
   );
 };
 
-export default Pokemons;
+export default PokemonDettails;
