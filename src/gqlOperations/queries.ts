@@ -20,6 +20,7 @@ query Pokemon($id: String) {
       number
       classification
       image
+      resistant
     }
   }
 `

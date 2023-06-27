@@ -13,7 +13,6 @@ const PokemonDettails = () => {
     },
   });
 
-
   //Loading State
   if (loading) {
     return (
@@ -70,22 +69,32 @@ const PokemonDettails = () => {
 
   console.log('Single Pokemon> ', data);
 
-  const { name, number, classification, image } = data?.pokemon;
+  const { name, number, classification, image, resistant } = data?.pokemon;
 
   return (
-    <main className='flex flex-col justify-center items-center'>
-        <Link href={'/pokemons'}>
-            <button type="button" className="text-white my-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">Go back to all Pokemons</button>
-        </Link>
-      <div className='w-96 bg-white shadow-md shadow-cyan-500/50 rounded-xl duration-500 hover:scale-105 hover:shadow-xl'>
+    <main className='flex flex-col justify-center items-center '>
+      <Link href={'/pokemons'}>
+        <button
+          type='button'
+          className='text-white my-4 bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2'
+        >
+          Go back to all Pokemons
+        </button>
+      </Link>
+      <div className='w-96 bg-white shadow-md cursor-pointer shadow-cyan-500/50 rounded-xl duration-500 hover:scale-105 hover:shadow-xl'>
         <div className='flex justify-center items-center py-4'>
-        <img src={image} alt='Pokemons' className='h-80 w-72 object-cover rounded-t-xl' />
+          <img src={image} alt='Pokemons' className='h-80 w-72 object-cover rounded-t-xl' />
         </div>
         <div className='px-4 py-3 w-72'>
           <span className='text-gray-400 mr-3 uppercase text-xs'>{classification}</span>
           <p className='text-lg font-bold text-black truncate block capitalize'>{name}</p>
           <div className='flex items-center'>
             <p className='text-lg font-semibold text-black cursor-auto my-3'>{number}</p>
+          </div>
+          <div className='flex gap-2'>
+            {resistant.map((res) => (
+              <p className='border-2 border-indigo-500/100 rounded-md p-1'>{res}</p>
+            ))}
           </div>
         </div>
       </div>
